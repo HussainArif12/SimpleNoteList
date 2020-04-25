@@ -2,5 +2,8 @@ html
     body
         ul 
             each val,key in data
-                li= val.title
-                    p=val.description
+             li= val.title
+              
+              p=val.description
+              a(href='/' + val._id)
+               button(value='submit') Delete this
