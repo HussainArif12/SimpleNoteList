@@ -4,9 +4,8 @@ const path  = require('path')
 const pug=  require('pug');
 const Notes = require("./database")
 
-
 const app = express()
-
+let id = 0;
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,"views"));
 
@@ -61,8 +60,8 @@ app.post("/notes-added" , (req,res,next)=> {
  
 
 
-app.get("/:__id", (req,res,next)=>{
-  console.log('parameter: ' + req.params.__id);
+app.get("/delete/:__id", (req,res,next)=>{
+  //console.log('parameter: ' + req.params.__id);
     Notes.findByIdAndRemove(req.params.__id ,{useFindAndModify : false}, (err,document)=> {
        if(err) console.log(err)
        console.log(document);
@@ -71,8 +70,30 @@ app.get("/:__id", (req,res,next)=>{
    
 })
 
-app.get('/update/:_id',(req,res,next)=>{
-  
+
+
+app.get('/update/:__id',(req,res,next)=>{
+  id = req.params.__id
+  Notes.findById( id).exec((err,document)=>{
+    //app.render('updatepage' , {data: document});
+    if(err) console.log(err);
+    console.log('the document in question is ' + document);
+   res.render('updatepage', {data:document})
+  })
 })
 
+app.post('/updatepage',(req,res,next)=>{
+  console.log(req.body);
+  Notes.findByIdAndUpdate(id , {title : req.body.title , description: req.body.description },{useFindAndModify:false},(err,document)=>{
+console.log('updated');
+res.redirect('/index');
+  })
+  Notes.findById()
+})
+
+/*
+  app.get('/updatepage/:__id',(req,res,next)=>{
+    
+  })
+  */
   app.listen(3000);
