@@ -5,5 +5,7 @@ html
              li= val.title
               
               p=val.description
-              a(href='/' + val._id)
+              a(href='delete/' + val._id)
                button(value='submit') Delete this
+              a(href='update/' + val._id)
+                button(value='submit') Update
