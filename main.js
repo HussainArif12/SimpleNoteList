@@ -19,13 +19,27 @@ next();
 app.get("/" , (req,res,next)=> {
   // console.log("get perfomed")
   //now find them
-  res.redirect('/notes-added')
+  res.redirect('/notes-add')
 })
 
-app.get("/notes-added" , (req,res,next)=>{
-  res.render('notes-add');
+app.route("/notes-add")
+    .get((req,res,next)=>{
+      res.render('notes-add');
 })
-
+    .post( (req,res,next)=> {
+          console.log(req.body);
+          const Note = new Notes({})
+      
+          Note.title = req.body.title
+          Note.description = req.body.description
+            //save notes first
+      Note.save((err,product)=>{
+              if(err) console.log(err);
+              console.log(product);
+          })
+        res.redirect('/index')
+        })
+      
 app.get('/index' , (req,res,next)=>{
 
   Notes.find({}).exec((err,document)=> {
@@ -33,32 +47,16 @@ app.get('/index' , (req,res,next)=>{
     if(err) console.log(err);
       let Data = [];
       document.forEach((value) => {
-      Data.push(value)
-    })
-  res.render('view',{data:Data})
-     })
+        Data.push(value)
+      })
+      res.render('view',{data:document})
+  })
 })
 
-app.post("/notes-added" , (req,res,next)=> {
-    console.log(req.body);
-    const Note = new Notes({})
-
-    Note.title = req.body.title
-    Note.description = req.body.description
-      //save notes first
-    Note.save((err,product)=>{
-        if(err) console.log(err);
-        console.log(product);
-    })
   
  //    const compiledFunction = pug.compileFile(path.join(__dirname,"views", "view.pug"))
     // console.log(compiledFunction({data : Data}))
    ///  compiledFunction({data : Data}) 
-     res.redirect('/index') 
-  
-  })
- 
-
 
 app.get("/delete/:__id", (req,res,next)=>{
   //console.log('parameter: ' + req.params.__id);
@@ -72,7 +70,7 @@ app.get("/delete/:__id", (req,res,next)=>{
 
 
 
-app.get('/update/:__id',(req,res,next)=>{
+app.get('/updatepage/:__id',(req,res,next)=>{
   id = req.params.__id
   Notes.findById( id).exec((err,document)=>{
     //app.render('updatepage' , {data: document});
@@ -82,13 +80,14 @@ app.get('/update/:__id',(req,res,next)=>{
   })
 })
 
+
 app.post('/updatepage',(req,res,next)=>{
   console.log(req.body);
-  Notes.findByIdAndUpdate(id , {title : req.body.title , description: req.body.description },{useFindAndModify:false},(err,document)=>{
+  Notes.findByIdAndUpdate(id , {title : req.body.title , description: req.body.description },{useFindAndModify:false}
+    ,(err,document)=>{
 console.log('updated');
 res.redirect('/index');
   })
-  Notes.findById()
 })
 
 /*
