@@ -3,6 +3,8 @@ link( href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="s
 style
     include style.css
 body
+        a(href='notes-add/')
+            button(value="submit" ) Create New  
         ul 
             each val,key in data
              li= val.title
@@ -12,5 +14,4 @@ body
                button(value='submit') Delete this
               a(href='updatepage/' + val._id)
                 button(value='submit') Update
-        a(href='notes-add/')
-            button(value="submit" ) Create New         
+              
