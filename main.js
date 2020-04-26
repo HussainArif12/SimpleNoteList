@@ -6,10 +6,10 @@ const Notes = require("./database")
 
 
 const app = express()
-const Note = new Notes({})
 
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,"views"));
+
 app.use(body_parser.urlencoded({extended:true}));
 app.use(body_parser.json());
 app.use((req,res,next)=> {
@@ -28,6 +28,7 @@ app.get("/notes-added" , (req,res,next)=>{
 })
 
 app.get('/index' , (req,res,next)=>{
+
   Notes.find({}).exec((err,document)=> {
         
     if(err) console.log(err);
@@ -36,12 +37,13 @@ app.get('/index' , (req,res,next)=>{
       Data.push(value)
     })
   res.render('view',{data:Data})
-    
-  })
+     })
 })
 
 app.post("/notes-added" , (req,res,next)=> {
     console.log(req.body);
+    const Note = new Notes({})
+
     Note.title = req.body.title
     Note.description = req.body.description
       //save notes first
@@ -54,18 +56,23 @@ app.post("/notes-added" , (req,res,next)=> {
     // console.log(compiledFunction({data : Data}))
    ///  compiledFunction({data : Data}) 
      res.redirect('/index') 
-      console.log(Data);
+  
   })
  
 
 
-app.delete("/:title", (req,res,next)=>{
-  console.log(req.params.title);
-    Notes.deleteMany({title : req.params.title} , (err)=> {
+app.get("/:__id", (req,res,next)=>{
+  console.log('parameter: ' + req.params.__id);
+    Notes.findByIdAndRemove(req.params.__id ,{useFindAndModify : false}, (err,document)=> {
        if(err) console.log(err)
+       console.log(document);
     })
-    res.write("deleted")
-    res.end();
+  res.redirect('/index');
+   
+})
+
+app.get('/update/:_id',(req,res,next)=>{
+  
 })
 
   app.listen(3000);
