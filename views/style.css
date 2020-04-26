@@ -3,8 +3,11 @@ body{
    
 }
 button {
-    font-family:'Ubuntu'
+    font-family:'Ubuntu';
 }
 input[type='text']{
-    font-family:'Ubuntu'
+    font-family:'Ubuntu';
+}
+li {
+    padding  : 20px;
 }
