@@ -1,4 +1,7 @@
 html
+link( href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet")
+style
+    include style.css
 form(method='POST' action='/updatepage')
     p
     input(type='text', name='title', value=data.title)
@@ -6,3 +9,5 @@ form(method='POST' action='/updatepage')
     input(type='text' name='description' value=data.description)
     p
     input(value='submit' type='submit') 
+a(href='/index')
+    button(value="submit") Cancel and View List.
