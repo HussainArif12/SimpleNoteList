@@ -5,26 +5,9 @@ mongooseClient.connect("mongodb://localhost/notepadDB", {useNewUrlParser:true, u
 });
 
 const NotesSchema = mongooseClient.Schema({
-    title : {
-        type : String,
-        default:'none',
-        get: function(value) {
-            return value
-        },
-        set : function(value) {
-         return  value; 
-        }
-    },
-     description : {
-        type: String,
-        default: "none",
-        get: function(value ) {
-            return value
-        },
-        set : function(value) {
-            return  value;
-        }
-    }
+    title : String,
+     description : String,
+        
 })
 
 const Notes = mongooseClient.model("Notes", NotesSchema);

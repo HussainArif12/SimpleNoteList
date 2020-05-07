@@ -3,18 +3,20 @@ const body_parser = require("body-parser")
 const path  = require('path')
 const pug=  require('pug');
 const Notes = require("./database")
-
+const updateRouter = require('./update-router');
 const app = express()
-let id = 0;
+
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,"views"));
 
 app.use(body_parser.urlencoded({extended:true}));
 app.use(body_parser.json());
+app.use('/updatepage',updateRouter);
 app.use((req,res,next)=> {
     console.log(req.method + " : " + req.url);
 next();
 })
+
 
 app.get("/" , (req,res,next)=> {
   // console.log("get perfomed")
@@ -69,25 +71,23 @@ app.get("/delete/:__id", (req,res,next)=>{
 })
 
 
+app.get('/updatepage/:__id',(req,res)=>{
+  console.log('id for get request: ' + req.id);
+  Notes.findById(req.id,(err,document)=>{
+    console.log(document);
 
-app.get('/updatepage/:__id',(req,res,next)=>{
-  id = req.params.__id
-  Notes.findById( id).exec((err,document)=>{
-    //app.render('updatepage' , {data: document});
-    if(err) console.log(err);
-    console.log('the document in question is ' + document);
-   res.render('updatepage', {data:document})
+    res.render('updatepage',{data:document});
   })
 })
 
-
 app.post('/updatepage',(req,res,next)=>{
-  console.log(req.body);
-  Notes.findByIdAndUpdate(id , {title : req.body.title , description: req.body.description },{useFindAndModify:false}
+  console.log('id: ' + req.id);
+  Notes.findByIdAndUpdate(req.id , {title : req.body.title , description: req.body.description },{useFindAndModify:false}
     ,(err,document)=>{
 console.log('updated');
+})
 res.redirect('/index');
-  })
+return next();
 })
 
 /*
