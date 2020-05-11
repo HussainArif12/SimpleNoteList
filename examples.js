@@ -1,13 +1,12 @@
-const express = require("express");
-const bodyparser = require("body-parser")
-const app = express()
-app.use(bodyparser.text());
+const express = require('express');
+const app  = express()
 
-app.post('/',(req,res)=>{
-    console.log(req.body)
-    res.send(req.body);
+app.get('/',(req,res,next)=>{
+    req.message = 'Hello World';
+    res.send('data sent');
 })
-app.post('/poster', (req,res)=>{
-    console.log(req.body);
+
+app.get('/hi',(req,res,next)=>{
+    
 })
-app.listen(3000);
+

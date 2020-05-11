@@ -1,6 +1,5 @@
 body{
     font-family: 'Ubuntu';
-   
 }
 button {
     font-family:'Ubuntu';
@@ -10,4 +9,5 @@ input[type='text']{
 }
 li {
     padding  : 20px;
+  
 }
